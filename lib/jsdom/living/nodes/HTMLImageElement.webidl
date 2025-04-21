@@ -16,6 +16,7 @@ interface HTMLImageElement : HTMLElement {
   readonly attribute unsigned long naturalHeight;
   readonly attribute boolean complete;
   readonly attribute USVString currentSrc;
+  readonly attribute USVString? srcData;
 //  [CEReactions] attribute DOMString referrerPolicy;
 
 //  Promise<void> decode();
