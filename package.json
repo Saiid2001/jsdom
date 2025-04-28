@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@asamuzakjp/css-color": "^3.1.1",
-    "cssstyle": "^4.2.1",
+    "cssstyle": "file:../jsdom_cssstyle",
     "data-urls": "^5.0.0",
     "decimal.js": "^10.5.0",
     "form-data": "^4.0.1",
