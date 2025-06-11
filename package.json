@@ -32,6 +32,7 @@
     "html-encoding-sniffer": "^4.0.0",
     "is-potential-custom-element-name": "^1.0.1",
     "nwsapi": "^2.2.16",
+    "parse-multipart-data": "^1.5.0",
     "parse5": "^7.2.1",
     "readable-stream": "^4.7.0",
     "rrweb-cssom": "^0.8.0",
