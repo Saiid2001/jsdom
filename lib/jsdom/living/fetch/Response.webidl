@@ -1,0 +1,29 @@
+// https://fetch.spec.whatwg.org/#response
+[Exposed=(Window,Worker)]
+interface Response {
+  constructor(optional BodyInit? body = null, optional ResponseInit init = {});
+
+  [WebIDL2JSCallWithGlobal, NewObject] static Response error();
+  [WebIDL2JSCallWithGlobal, NewObject] static Response redirect(USVString url, optional unsigned short status = 302);
+  [WebIDL2JSCallWithGlobal, NewObject] static Response json(any data, optional ResponseInit init = {});
+
+  readonly attribute ResponseType type;
+
+  readonly attribute USVString url;
+  readonly attribute boolean redirected;
+  readonly attribute unsigned short status;
+  readonly attribute boolean ok;
+  readonly attribute ByteString statusText;
+  [SameObject] readonly attribute Headers headers;
+
+  [NewObject] Response clone();
+};
+Response includes Body;
+
+dictionary ResponseInit {
+  unsigned short status = 200;
+  ByteString statusText = "";
+  HeadersInit headers;
+};
+
+enum ResponseType { "basic", "cors", "default", "error", "opaque", "opaqueredirect" };
