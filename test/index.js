@@ -17,6 +17,7 @@ require("./api/resources.js");
 require("./api/virtual-console.js");
 
 require("./helper-unit-tests/named-properties-tracker.js");
+require("./helper-unit-tests/style-rules-type-selectors.js");
 
 require("./to-port-to-wpts/class-list.js");
 require("./to-port-to-wpts/current-script.js");
