@@ -19,7 +19,7 @@ interface HTMLImageElement : HTMLElement {
   readonly attribute USVString? srcData;
 //  [CEReactions] attribute DOMString referrerPolicy;
 
-//  Promise<void> decode();
+  Promise<undefined> decode();
 
   // also has obsolete members
 };
