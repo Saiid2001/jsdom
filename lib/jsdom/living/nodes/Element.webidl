@@ -72,13 +72,14 @@ dictionary ScrollIntoViewOptions : ScrollOptions {
 partial interface Element {
   DOMRectList getClientRects();
   [NewObject] DOMRect getBoundingClientRect();
-//  undefined scrollIntoView(optional (boolean or ScrollIntoViewOptions) arg);
-//  undefined scroll(optional ScrollToOptions options = {});
-//  undefined scroll(unrestricted double x, unrestricted double y);
-//  undefined scrollTo(optional ScrollToOptions options = {});
-//  undefined scrollTo(unrestricted double x, unrestricted double y);
-//  undefined scrollBy(optional ScrollToOptions options = {});
-//  undefined scrollBy(unrestricted double x, unrestricted double y);
+  // Declared over `any` rather than over the spec's overloads: both forms —
+  // (x, y) and an options dictionary — reach one implementation, and the
+  // ScrollToOptions and ScrollIntoViewOptions dictionaries are not defined
+  // here. What a page can observe is the same.
+  undefined scrollIntoView(optional any arg);
+  undefined scroll(optional any x, optional any y);
+  undefined scrollTo(optional any x, optional any y);
+  undefined scrollBy(optional any x, optional any y);
   attribute unrestricted double scrollTop;
   attribute unrestricted double scrollLeft;
   readonly attribute long scrollWidth;
