@@ -124,6 +124,11 @@ partial interface Document {
   [SameObject] readonly attribute StyleSheetList styleSheets;
 };
 
+// https://drafts.csswg.org/cssom-view/#extensions-to-the-document-interface
+partial interface Document {
+  readonly attribute Element? scrollingElement;
+};
+
 // https://w3c.github.io/page-visibility/#extensions-to-the-document-interface
 enum VisibilityState { "hidden", "visible", "prerender" };
 
