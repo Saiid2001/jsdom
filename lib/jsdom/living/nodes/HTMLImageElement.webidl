@@ -18,6 +18,7 @@ interface HTMLImageElement : HTMLElement {
   readonly attribute USVString currentSrc;
   readonly attribute USVString? srcData;
 //  [CEReactions] attribute DOMString referrerPolicy;
+  [CEReactions] attribute DOMString loading;
 
   Promise<undefined> decode();
 
