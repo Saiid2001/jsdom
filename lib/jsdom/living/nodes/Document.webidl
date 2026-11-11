@@ -119,6 +119,12 @@ partial interface Document {
 //  [SameObject] readonly attribute HTMLAllCollection all;
 };
 
+// https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#html-unsafe-methods
+// TrustedHTML is not implemented, so the markup is a DOMString.
+partial interface Document {
+  [WebIDL2JSCallWithGlobal, NewObject] static Document parseHTMLUnsafe(DOMString html);
+};
+
 // https://drafts.csswg.org/cssom/#extensions-to-the-document-interface
 partial interface Document {
   [SameObject] readonly attribute StyleSheetList styleSheets;

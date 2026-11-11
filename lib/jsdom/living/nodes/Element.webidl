@@ -47,6 +47,10 @@ interface Element : Node {
 
 dictionary ShadowRootInit {
   required ShadowRootMode mode;
+  boolean delegatesFocus = false;
+  SlotAssignmentMode slotAssignment = "named";
+  boolean clonable = false;
+  boolean serializable = false;
 };
 
 // https://w3c.github.io/DOM-Parsing/#extensions-to-the-element-interface
