@@ -1,7 +1,9 @@
 interface mixin HTMLOrSVGElement {
   [SameObject] readonly attribute DOMStringMap dataset;
-// TODO: Shouldn't be directly [Reflect]ed
-  [Reflect] attribute DOMString nonce; // intentionally no [CEReactions]
+  attribute DOMString nonce; // intentionally no [CEReactions]
+
+  // Reflected only: nothing focuses an autofocus element.
+  [CEReactions, Reflect] attribute boolean autofocus;
 
   [CEReactions] attribute long tabIndex;
 //  We don't support FocusOptions yet

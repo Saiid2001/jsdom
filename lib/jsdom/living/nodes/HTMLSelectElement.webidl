@@ -1,7 +1,7 @@
 [Exposed=Window,
  HTMLConstructor]
 interface HTMLSelectElement : HTMLElement {
-//  [CEReactions] attribute DOMString autocomplete;
+  [CEReactions, Reflect] attribute DOMString autocomplete;
   [CEReactions, Reflect] attribute boolean autofocus;
   [CEReactions, Reflect] attribute boolean disabled;
   readonly attribute HTMLFormElement? form;

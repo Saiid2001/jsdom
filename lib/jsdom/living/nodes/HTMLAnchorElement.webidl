@@ -4,7 +4,7 @@
 interface HTMLAnchorElement : HTMLElement {
   [CEReactions, Reflect] attribute DOMString target;
   [CEReactions, Reflect] attribute DOMString download;
-//  [CEReactions] attribute USVString ping;
+  [CEReactions, Reflect] attribute USVString ping;
   [CEReactions, Reflect] attribute DOMString rel;
   [SameObject, PutForwards=value] readonly attribute DOMTokenList relList;
   [CEReactions, Reflect] attribute DOMString hreflang;
@@ -12,7 +12,7 @@ interface HTMLAnchorElement : HTMLElement {
 
   [CEReactions] attribute DOMString text;
 
-//  [CEReactions] attribute DOMString referrerPolicy;
+  [CEReactions, Reflect, ReflectEnum=("", "no-referrer", "no-referrer-when-downgrade", "same-origin", "origin", "strict-origin", "origin-when-cross-origin", "strict-origin-when-cross-origin", "unsafe-url")] attribute DOMString referrerPolicy;
 
   // also has obsolete members
 };

@@ -13,6 +13,7 @@ interface mixin GlobalEventHandlers {
   attribute EventHandler onchange;
   attribute EventHandler onclick;
   attribute EventHandler onclose;
+  attribute EventHandler oncommand;
   attribute EventHandler oncontextlost;
   attribute EventHandler oncontextmenu;
   attribute EventHandler oncontextrestored;
@@ -76,6 +77,43 @@ interface mixin GlobalEventHandlers {
   attribute EventHandler onwebkitanimationstart;
   attribute EventHandler onwebkittransitionend;
   attribute EventHandler onwheel;
+};
+
+// https://drafts.csswg.org/css-animations/#interface-globaleventhandlers-idl
+partial interface mixin GlobalEventHandlers {
+  attribute EventHandler onanimationstart;
+  attribute EventHandler onanimationiteration;
+  attribute EventHandler onanimationend;
+  attribute EventHandler onanimationcancel;
+};
+
+// https://drafts.csswg.org/css-transitions/#interface-globaleventhandlers-idl
+partial interface mixin GlobalEventHandlers {
+  attribute EventHandler ontransitionrun;
+  attribute EventHandler ontransitionstart;
+  attribute EventHandler ontransitionend;
+  attribute EventHandler ontransitioncancel;
+};
+
+// https://w3c.github.io/pointerevents/#extensions-to-the-globaleventhandlers-mixin
+// onpointerrawupdate is [SecureContext], which is left out with the rest of that distinction.
+partial interface mixin GlobalEventHandlers {
+  attribute EventHandler ongotpointercapture;
+  attribute EventHandler onlostpointercapture;
+  attribute EventHandler onpointerdown;
+  attribute EventHandler onpointermove;
+  attribute EventHandler onpointerup;
+  attribute EventHandler onpointercancel;
+  attribute EventHandler onpointerover;
+  attribute EventHandler onpointerout;
+  attribute EventHandler onpointerenter;
+  attribute EventHandler onpointerleave;
+};
+
+// https://w3c.github.io/selection-api/#extensions-to-globaleventhandlers-interface
+partial interface mixin GlobalEventHandlers {
+  attribute EventHandler onselectstart;
+  attribute EventHandler onselectionchange;
 };
 
 // https://w3c.github.io/touch-events/#extensions-to-the-globaleventhandlers-mixin

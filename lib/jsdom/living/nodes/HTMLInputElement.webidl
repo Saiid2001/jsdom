@@ -12,14 +12,13 @@ interface HTMLInputElement : HTMLElement {
   [CEReactions, Reflect] attribute boolean disabled;
   readonly attribute HTMLFormElement? form;
   attribute FileList? files;
-//  [CEReactions] attribute USVString formAction;
-//  [CEReactions] attribute DOMString formEnctype;
-//  [CEReactions] attribute DOMString formMethod;
+  [CEReactions] attribute USVString formAction;
+  [CEReactions, Reflect, ReflectEnum=("application/x-www-form-urlencoded", "multipart/form-data", "text/plain"), ReflectInvalid="application/x-www-form-urlencoded"] attribute DOMString formEnctype;
+  [CEReactions, Reflect, ReflectEnum=("get", "post", "dialog"), ReflectInvalid="get"] attribute DOMString formMethod;
   [CEReactions, Reflect] attribute boolean formNoValidate;
   [CEReactions, Reflect] attribute DOMString formTarget;
-//  [CEReactions] attribute unsigned long height;
+  [CEReactions] attribute unsigned long height;
   attribute boolean indeterminate;
-  [CEReactions, Reflect] attribute DOMString inputMode;
   readonly attribute HTMLElement? list;
   [CEReactions, Reflect] attribute DOMString max;
   [CEReactions, ReflectNonNegative] attribute long maxLength;
@@ -39,7 +38,7 @@ interface HTMLInputElement : HTMLElement {
   [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
   attribute object? valueAsDate;
   attribute unrestricted double valueAsNumber;
-//  [CEReactions] attribute unsigned long width;
+  [CEReactions] attribute unsigned long width;
 
   undefined stepUp(optional long n = 1);
   undefined stepDown(optional long n = 1);

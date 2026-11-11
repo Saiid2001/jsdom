@@ -7,9 +7,9 @@
 interface HTMLFormElement : HTMLElement {
   [CEReactions, Reflect="accept-charset"] attribute DOMString acceptCharset;
   [CEReactions] attribute USVString action;
-//  [CEReactions] attribute DOMString autocomplete;
+  [CEReactions, Reflect, ReflectEnum=("on", "off"), ReflectMissing="on", ReflectInvalid="on"] attribute DOMString autocomplete;
   [CEReactions] attribute DOMString enctype;
-//  [CEReactions] attribute DOMString encoding;
+  [CEReactions] attribute DOMString encoding;
   [CEReactions] attribute DOMString method;
   [CEReactions, Reflect] attribute DOMString name;
   [CEReactions, Reflect] attribute boolean noValidate;

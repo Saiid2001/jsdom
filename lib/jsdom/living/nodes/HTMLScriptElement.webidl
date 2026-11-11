@@ -3,12 +3,13 @@
 interface HTMLScriptElement : HTMLElement {
   [CEReactions, ReflectURL] attribute USVString src;
   [CEReactions, Reflect] attribute DOMString type;
-//  [CEReactions, Reflect] attribute boolean noModule;
+  [CEReactions, Reflect] attribute boolean noModule;
 //  [CEReactions] attribute boolean async;
   [CEReactions, Reflect] attribute boolean defer;
-  [CEReactions, Reflect] attribute DOMString? crossOrigin;
+  [CEReactions, Reflect, ReflectEnum=("anonymous", "use-credentials"), ReflectEnumAlias=("", "anonymous"), ReflectInvalid="anonymous"] attribute DOMString? crossOrigin;
   [CEReactions] attribute DOMString text;
-//  [CEReactions, Reflect] attribute DOMString integrity;
+  [CEReactions, Reflect] attribute DOMString integrity;
+  [CEReactions, Reflect, ReflectEnum=("", "no-referrer", "no-referrer-when-downgrade", "same-origin", "origin", "strict-origin", "origin-when-cross-origin", "strict-origin-when-cross-origin", "unsafe-url")] attribute DOMString referrerPolicy;
 
 
   // also has obsolete members

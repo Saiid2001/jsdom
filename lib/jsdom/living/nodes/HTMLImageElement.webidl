@@ -7,7 +7,7 @@ interface HTMLImageElement : HTMLElement {
   [CEReactions, ReflectURL] attribute USVString src;
   [CEReactions, Reflect] attribute USVString srcset;
   [CEReactions, Reflect] attribute DOMString sizes;
-  [CEReactions, Reflect] attribute DOMString? crossOrigin;
+  [CEReactions, Reflect, ReflectEnum=("anonymous", "use-credentials"), ReflectEnumAlias=("", "anonymous"), ReflectInvalid="anonymous"] attribute DOMString? crossOrigin;
   [CEReactions, Reflect] attribute DOMString useMap;
   [CEReactions, Reflect] attribute boolean isMap;
   [CEReactions] attribute unsigned long width;
@@ -17,7 +17,8 @@ interface HTMLImageElement : HTMLElement {
   readonly attribute boolean complete;
   readonly attribute USVString currentSrc;
   readonly attribute USVString? srcData;
-//  [CEReactions] attribute DOMString referrerPolicy;
+  [CEReactions, Reflect, ReflectEnum=("", "no-referrer", "no-referrer-when-downgrade", "same-origin", "origin", "strict-origin", "origin-when-cross-origin", "strict-origin-when-cross-origin", "unsafe-url")] attribute DOMString referrerPolicy;
+  [CEReactions, Reflect, ReflectEnum=("sync", "async", "auto"), ReflectMissing="auto", ReflectInvalid="auto"] attribute DOMString decoding;
   [CEReactions] attribute DOMString loading;
 
   Promise<undefined> decode();

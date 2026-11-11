@@ -11,7 +11,7 @@ interface HTMLIFrameElement : HTMLElement {
 //  [CEReactions] attribute boolean allowUserMedia;
   [CEReactions, Reflect] attribute DOMString width;
   [CEReactions, Reflect] attribute DOMString height;
-//  [CEReactions] attribute DOMString referrerPolicy;
+  [CEReactions, Reflect, ReflectEnum=("", "no-referrer", "no-referrer-when-downgrade", "same-origin", "origin", "strict-origin", "origin-when-cross-origin", "strict-origin-when-cross-origin", "unsafe-url")] attribute DOMString referrerPolicy;
   readonly attribute Document? contentDocument;
   readonly attribute WindowProxy? contentWindow;
   Document? getSVGDocument();

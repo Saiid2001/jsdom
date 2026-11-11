@@ -26,6 +26,9 @@ require("./helper-unit-tests/document-domain.js");
 require("./helper-unit-tests/adopted-event-handlers.js");
 require("./helper-unit-tests/form-submission.js");
 require("./helper-unit-tests/image-loading.js");
+require("./helper-unit-tests/reflected-attributes.js");
+require("./helper-unit-tests/event-interfaces.js");
+require("./helper-unit-tests/custom-element-names.js");
 
 require("./to-port-to-wpts/class-list.js");
 require("./to-port-to-wpts/current-script.js");

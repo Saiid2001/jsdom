@@ -4,9 +4,9 @@ interface HTMLButtonElement : HTMLElement {
   [CEReactions, Reflect] attribute boolean autofocus;
   [CEReactions, Reflect] attribute boolean disabled;
   readonly attribute HTMLFormElement? form;
-//  [CEReactions] attribute USVString formAction;
-//  [CEReactions] attribute DOMString formEnctype;
-//  [CEReactions] attribute DOMString formMethod;
+  [CEReactions] attribute USVString formAction;
+  [CEReactions, Reflect, ReflectEnum=("application/x-www-form-urlencoded", "multipart/form-data", "text/plain"), ReflectInvalid="application/x-www-form-urlencoded"] attribute DOMString formEnctype;
+  [CEReactions, Reflect, ReflectEnum=("get", "post", "dialog"), ReflectInvalid="get"] attribute DOMString formMethod;
   [CEReactions, Reflect] attribute boolean formNoValidate;
   [CEReactions, Reflect] attribute DOMString formTarget;
   [CEReactions, Reflect] attribute DOMString name;

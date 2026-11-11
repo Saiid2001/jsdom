@@ -11,14 +11,16 @@ interface HTMLMediaElement : HTMLElement {
   [CEReactions, ReflectURL] attribute USVString src;
 //  attribute MediaProvider? srcObject;
   readonly attribute USVString currentSrc;
-  [CEReactions, Reflect] attribute DOMString? crossOrigin;
+  [CEReactions, Reflect, ReflectEnum=("anonymous", "use-credentials"), ReflectEnumAlias=("", "anonymous"), ReflectInvalid="anonymous"] attribute DOMString? crossOrigin;
   const unsigned short NETWORK_EMPTY = 0;
   const unsigned short NETWORK_IDLE = 1;
   const unsigned short NETWORK_LOADING = 2;
   const unsigned short NETWORK_NO_SOURCE = 3;
   readonly attribute unsigned short networkState;
-  [CEReactions, Reflect] attribute DOMString preload; // TODO limited only to known values
+  [CEReactions, Reflect, ReflectEnum=("none", "metadata", "auto"), ReflectEnumAlias=("", "auto"), ReflectMissing="metadata", ReflectInvalid="metadata"] attribute DOMString preload;
   readonly attribute TimeRanges buffered;
+  // Reflected only: a media element is not lazy-loaded.
+  [CEReactions, Reflect, ReflectEnum=("lazy", "eager"), ReflectMissing="eager", ReflectInvalid="eager"] attribute DOMString loading;
   undefined load();
   CanPlayTypeResult canPlayType(DOMString type);
 

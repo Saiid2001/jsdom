@@ -10,16 +10,21 @@ interface HTMLElement : Element {
 
   // user interaction
   [CEReactions, Reflect] attribute boolean hidden;
+  [CEReactions, Reflect] attribute boolean inert;
   undefined click();
   [CEReactions, Reflect] attribute DOMString accessKey;
 //  readonly attribute DOMString accessKeyLabel;
   [CEReactions] attribute boolean draggable;
-//  [CEReactions] attribute boolean spellcheck;
-//  [CEReactions] attribute DOMString autocapitalize;
+  [CEReactions] attribute boolean spellcheck;
+  [CEReactions] attribute DOMString writingSuggestions;
+  [CEReactions] attribute DOMString autocapitalize;
 
 //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString innerText;
 
   ElementInternals attachInternals();
+
+  // The popover API: the attribute is reflected, nothing shows or hides a popover.
+  [CEReactions, Reflect, ReflectEnum=("auto", "manual", "hint"), ReflectEnumAlias=("", "auto"), ReflectInvalid="manual"] attribute DOMString? popover;
 };
 
 HTMLElement includes GlobalEventHandlers;

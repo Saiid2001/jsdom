@@ -102,6 +102,64 @@ const transformer = new Webidl2js({
       }
     }
 
+    // An enumerated attribute: [ReflectEnum=("kw", ...)] lists its keywords, each its state's canonical keyword;
+    // [ReflectEnumAlias=("alias", "kw", ...)] pairs further keywords with the canonical keyword of their state;
+    // [ReflectMissing] and [ReflectInvalid] name the keyword of the missing and invalid value defaults. Without
+    // one, that value maps to no state: the empty string, or null for a nullable attribute's missing value.
+    // https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflecting-content-attributes-in-idl-attributes
+    const reflectEnumAttr = idl.extAttrs.find(attr => attr.name === "ReflectEnum");
+    if (reflectEnumAttr) {
+      if (!isSimpleIDLType(idl.idlType, "DOMString")) {
+        throw new Error("[ReflectEnum] specified on non-DOMString IDL attribute");
+      }
+      const stringValue = name => {
+        const attr = idl.extAttrs.find(a => a.name === name);
+        return attr ? JSON.parse(attr.rhs.value) : undefined;
+      };
+      const keywords = new Map();
+      for (const { value } of reflectEnumAttr.rhs.value) {
+        const keyword = JSON.parse(value);
+        keywords.set(keyword.toLowerCase(), keyword);
+      }
+      const aliasAttr = idl.extAttrs.find(attr => attr.name === "ReflectEnumAlias");
+      if (aliasAttr) {
+        const pairs = aliasAttr.rhs.value.map(v => JSON.parse(v.value));
+        for (let i = 0; i < pairs.length; i += 2) {
+          keywords.set(pairs[i].toLowerCase(), pairs[i + 1]);
+        }
+      }
+      const missing = stringValue("ReflectMissing");
+      const invalid = stringValue("ReflectInvalid");
+      const asciiLowercase = this.addImport("../helpers/strings", "asciiLowercase");
+      const missingValue = missing !== undefined ? JSON.stringify(missing) : idl.idlType.nullable ? "null" : `""`;
+      const invalidValue = JSON.stringify(invalid !== undefined ? invalid : "");
+
+      return {
+        get: `
+          const value = ${implObj}._reflectGetTheContentAttribute("${attrName}");
+          if (value === null) {
+            return ${missingValue};
+          }
+          switch (${asciiLowercase}(value)) {
+            ${[...keywords].map(([k, canonical]) => `case ${JSON.stringify(k)}: return ${JSON.stringify(canonical)};`)
+              .join("\n")}
+          }
+          return ${invalidValue};
+        `,
+        set: idl.idlType.nullable ?
+          `
+            if (V === null) {
+              ${implObj}._reflectDeleteTheContentAttribute("${attrName}");
+            } else {
+              ${implObj}._reflectSetTheContentAttribute("${attrName}", V);
+            }
+          ` :
+          `
+            ${implObj}._reflectSetTheContentAttribute("${attrName}", V);
+          `
+      };
+    }
+
     if (isSimpleIDLType(idl.idlType, "DOMString") || isSimpleIDLType(idl.idlType, "USVString")) {
       if (idl.idlType.nullable) {
         // Nonstandard; see https://github.com/whatwg/html/issues/10037. This passes the WPTs though.
