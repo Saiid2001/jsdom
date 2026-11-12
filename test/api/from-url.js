@@ -209,6 +209,24 @@ describe("API: JSDOM.fromURL()", () => {
           const dom = await JSDOM.fromURL(requestURL);
           assert.equal(dom.window.document.contentType, "application/xml");
         });
+
+        it("should show an image response as a document holding the image", async () => {
+          const bytes = Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]);
+          const url = await simpleServer(200, { "Content-Type": "image/png" }, bytes);
+
+          const dom = await JSDOM.fromURL(url + "bird.png");
+          const images = dom.window.document.querySelectorAll("img");
+
+          assert.equal(images.length, 1);
+          assert.equal(images[0].getAttribute("src"), "data:image/png;base64," + bytes.toString("base64"));
+          assert.equal(dom.window.document.title, "bird.png");
+          assert.equal(dom.window.location.href, url + "bird.png");
+        });
+
+        it("should still refuse a response it has no way to show", () => {
+          return simpleServer(200, { "Content-Type": "application/octet-stream" }, "x")
+            .then(url => assert.rejects(JSDOM.fromURL(url), RangeError));
+        });
       });
     });
 
