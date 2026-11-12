@@ -76,3 +76,4 @@ enum SelectionMode {
   "end",
   "preserve" // default
 };
+HTMLInputElement includes PopoverInvokerElement;

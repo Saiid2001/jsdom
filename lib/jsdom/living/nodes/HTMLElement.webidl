@@ -23,8 +23,19 @@ interface HTMLElement : Element {
 
   ElementInternals attachInternals();
 
-  // The popover API: the attribute is reflected, nothing shows or hides a popover.
+  // https://html.spec.whatwg.org/multipage/popover.html#the-popover-attribute
+  [CEReactions] undefined showPopover(optional ShowPopoverOptions options = {});
+  [CEReactions] undefined hidePopover();
+  [CEReactions] boolean togglePopover(optional (TogglePopoverOptions or boolean) options);
   [CEReactions, Reflect, ReflectEnum=("auto", "manual", "hint"), ReflectEnumAlias=("", "auto"), ReflectInvalid="manual"] attribute DOMString? popover;
+};
+
+dictionary ShowPopoverOptions {
+  HTMLElement source;
+};
+
+dictionary TogglePopoverOptions : ShowPopoverOptions {
+  boolean force;
 };
 
 HTMLElement includes GlobalEventHandlers;
