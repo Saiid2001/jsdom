@@ -35,6 +35,7 @@ require("./helper-unit-tests/parser-pause.js");
 require("./helper-unit-tests/node-length.js");
 require("./helper-unit-tests/module-fetch-failure.js");
 require("./helper-unit-tests/sheet-media.js");
+require("./helper-unit-tests/noscript-display.js");
 
 require("./to-port-to-wpts/class-list.js");
 require("./to-port-to-wpts/current-script.js");
