@@ -23,4 +23,13 @@ describe("Helpers: noscript display", () => {
 
     assert.notEqual(window.getComputedStyle(noscript).display, "none");
   });
+
+  specify("a <noscript> outside the HTML namespace is not hidden", () => {
+    const { window } = new JSDOM(`<body>`, { runScripts: "dangerously" });
+    const noscript = window.document.createElementNS("http://www.w3.org/2000/svg", "noscript");
+
+    window.document.body.append(noscript);
+
+    assert.notEqual(window.getComputedStyle(noscript).display, "none");
+  });
 });
