@@ -3,6 +3,7 @@
  HTMLConstructor]
 interface HTMLStyleElement : HTMLElement {
   [CEReactions, Reflect] attribute DOMString media;
+  [SameObject, PutForwards=value] readonly attribute DOMTokenList blocking;
 
   // also has obsolete members
 };

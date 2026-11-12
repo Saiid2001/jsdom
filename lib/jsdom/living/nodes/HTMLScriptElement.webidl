@@ -4,8 +4,9 @@ interface HTMLScriptElement : HTMLElement {
   [CEReactions, ReflectURL] attribute USVString src;
   [CEReactions, Reflect] attribute DOMString type;
   [CEReactions, Reflect] attribute boolean noModule;
-//  [CEReactions] attribute boolean async;
+  [CEReactions] attribute boolean async;
   [CEReactions, Reflect] attribute boolean defer;
+  [SameObject, PutForwards=value] readonly attribute DOMTokenList blocking;
   [CEReactions, Reflect, ReflectEnum=("anonymous", "use-credentials"), ReflectEnumAlias=("", "anonymous"), ReflectInvalid="anonymous"] attribute DOMString? crossOrigin;
   [CEReactions] attribute DOMString text;
   [CEReactions, Reflect] attribute DOMString integrity;

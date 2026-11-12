@@ -7,6 +7,7 @@ interface HTMLLinkElement : HTMLElement {
   [CEReactions, Reflect] attribute DOMString rel;
   [CEReactions, Reflect, ReflectEnum=("fetch", "audio", "document", "embed", "font", "image", "manifest", "object", "report", "script", "sharedworker", "style", "track", "video", "worker", "xslt")] attribute DOMString as;
   [SameObject, PutForwards=value] readonly attribute DOMTokenList relList;
+  [SameObject, PutForwards=value] readonly attribute DOMTokenList blocking;
   [CEReactions, Reflect] attribute DOMString media;
   [CEReactions, Reflect] attribute DOMString integrity;
   [CEReactions, Reflect] attribute DOMString hreflang;
