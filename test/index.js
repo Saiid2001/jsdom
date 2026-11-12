@@ -34,6 +34,7 @@ require("./helper-unit-tests/custom-element-names.js");
 require("./helper-unit-tests/parser-pause.js");
 require("./helper-unit-tests/node-length.js");
 require("./helper-unit-tests/module-fetch-failure.js");
+require("./helper-unit-tests/module-script-element.js");
 require("./helper-unit-tests/sheet-media.js");
 require("./helper-unit-tests/noscript-display.js");
 require("./helper-unit-tests/inner-text.js");
