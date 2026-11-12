@@ -19,7 +19,7 @@ interface HTMLElement : Element {
   [CEReactions] attribute DOMString writingSuggestions;
   [CEReactions] attribute DOMString autocapitalize;
 
-//  [CEReactions] attribute [LegacyNullToEmptyString] DOMString innerText;
+  [CEReactions] attribute [LegacyNullToEmptyString] DOMString innerText;
 
   ElementInternals attachInternals();
 
