@@ -122,4 +122,28 @@ describe("Helpers: requests carried through a proxy", () => {
       server.destroy();
     }
   });
+
+  specify("a cross-origin XHR that is not simple is preflighted at the site", async () => {
+    const { server, seen, proxyUrl } = await proxy();
+    const window = pageThrough(proxyUrl);
+
+    try {
+      await new Promise((resolve, reject) => {
+        const request = new window.XMLHttpRequest();
+
+        request.open("PUT", "https://other.test/data");
+        request.setRequestHeader("x-custom", "1");
+        request.onload = resolve;
+        request.onerror = () => reject(new Error("network error"));
+        request.send("body");
+      }).catch(() => {});
+
+      assert.equal(seen[0].headers["access-control-request-method"], "PUT");
+      assert.equal(seen[0].headers["bsbx-proxy-host"], "https://other.test");
+      assert.equal(seen[0].headers.origin, "https://site.test");
+    } finally {
+      window.close();
+      server.destroy();
+    }
+  });
 });
