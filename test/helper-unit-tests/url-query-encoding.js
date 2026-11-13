@@ -140,3 +140,16 @@ describe("Helpers: a form is submitted in its encoding", () => {
     assert.deepEqual(submitted("windows-1252", "\u00E9", "utf-16le"), ["https://example.test/next?q=%C3%A9"]);
   });
 });
+
+describe("Helpers: decoders whatwg-encoding lacks", () => {
+  specify("FileReader reads text as ISO-2022-JP", async () => {
+    const { window } = new JSDOM();
+    const reader = new window.FileReader();
+    const read = new Promise(resolve => {
+      reader.onload = () => resolve(reader.result);
+    });
+    const bytes = new Uint8Array([0x1B, 0x24, 0x42, 0x30, 0x21, 0x1B, 0x28, 0x42]);
+    reader.readAsText(new window.Blob([bytes]), "iso-2022-jp");
+    assert.equal(await read, "亜");
+  });
+});
