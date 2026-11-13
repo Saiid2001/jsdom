@@ -10,6 +10,7 @@ Navigator includes NavigatorOnLine;
 Navigator includes NavigatorCookies;
 Navigator includes NavigatorPlugins;
 Navigator includes NavigatorConcurrentHardware;
+Navigator includes NavigatorStorage;
 
 // https://html.spec.whatwg.org/#navigatorid
 interface mixin NavigatorID {
@@ -82,4 +83,11 @@ interface MimeType {
 // https://html.spec.whatwg.org/#navigatorconcurrenthardware
 interface mixin NavigatorConcurrentHardware {
   readonly attribute unsigned long long hardwareConcurrency;
+};
+
+// https://storage.spec.whatwg.org/#api
+// [SecureContext] is applied when a window is made (browser/Window.js).
+[SecureContext]
+interface mixin NavigatorStorage {
+  [SameObject] readonly attribute StorageManager storage;
 };

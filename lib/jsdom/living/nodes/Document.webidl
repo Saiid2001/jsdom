@@ -148,3 +148,9 @@ partial interface Document {
 partial interface Document {
   Selection? getSelection();
 };
+
+// https://privacycg.github.io/storage-access/#the-document-object
+partial interface Document {
+  Promise<boolean> hasStorageAccess();
+  Promise<undefined> requestStorageAccess();
+};
