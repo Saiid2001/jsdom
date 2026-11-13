@@ -11,6 +11,7 @@ Navigator includes NavigatorCookies;
 Navigator includes NavigatorPlugins;
 Navigator includes NavigatorConcurrentHardware;
 Navigator includes NavigatorStorage;
+Navigator includes NavigatorUA;
 
 // https://html.spec.whatwg.org/#navigatorid
 interface mixin NavigatorID {
@@ -90,4 +91,10 @@ interface mixin NavigatorConcurrentHardware {
 [SecureContext]
 interface mixin NavigatorStorage {
   [SameObject] readonly attribute StorageManager storage;
+};
+
+// https://wicg.github.io/ua-client-hints/#navigatorua
+// [SecureContext] is applied when a window is made (browser/Window.js).
+interface mixin NavigatorUA {
+  [SecureContext, SameObject] readonly attribute NavigatorUAData userAgentData;
 };
