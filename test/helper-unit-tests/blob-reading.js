@@ -59,4 +59,14 @@ describe("Helpers: reading a Blob", () => {
       setStreams(null);
     }
   });
+
+  specify("a detached buffer or view contributes no bytes", async () => {
+    const { window } = new JSDOM();
+    const buffer = new ArrayBuffer(4);
+    const view = new Uint8Array(buffer, 1, 2);
+    structuredClone(buffer, { transfer: [buffer] });
+
+    assert.equal(new window.Blob([view]).size, 0);
+    assert.equal(new window.Blob([buffer, "x"]).size, 1);
+  });
 });
