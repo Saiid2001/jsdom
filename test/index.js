@@ -21,6 +21,7 @@ require("./helper-unit-tests/style-rules-type-selectors.js");
 require("./helper-unit-tests/style-rules-escapes.js");
 require("./helper-unit-tests/style-rules-ancestors.js");
 require("./helper-unit-tests/min-max-sizes.js");
+require("./helper-unit-tests/animation-end-state.js");
 require("./helper-unit-tests/subresource-status.js");
 require("./helper-unit-tests/shared-realm-prototype.js");
 require("./helper-unit-tests/window-global-this.js");
