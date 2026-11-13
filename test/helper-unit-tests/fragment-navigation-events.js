@@ -46,3 +46,23 @@ describe("Helpers: the events a fragment navigation fires", () => {
     });
   });
 });
+
+describe("Helpers: setting location.hash to the fragment the URL already has", () => {
+  specify("an empty hash on a URL with none does not navigate", () => {
+    const { window } = new JSDOM(``, { url: "http://fragment.test/" });
+    const events = [];
+    window.addEventListener("popstate", () => events.push("popstate"));
+    window.addEventListener("hashchange", () => events.push("hashchange"));
+
+    window.location.hash = "";
+
+    return new Promise(resolve => {
+      setTimeout(() => {
+        assert.deepEqual(events, []);
+        assert.equal(window.location.href, "http://fragment.test/");
+        assert.equal(window.history.length, 1);
+        resolve();
+      }, 50);
+    });
+  });
+});
