@@ -47,6 +47,7 @@ require("./helper-unit-tests/inactive-document-scripts.js");
 require("./helper-unit-tests/frame-window-preparer.js");
 require("./helper-unit-tests/svg-intrinsic-size.js");
 require("./helper-unit-tests/request-from-request.js");
+require("./helper-unit-tests/response-clone.js");
 require("./helper-unit-tests/fetch-modes.js");
 require("./helper-unit-tests/presentational-hints.js");
 require("./helper-unit-tests/named-items.js");
