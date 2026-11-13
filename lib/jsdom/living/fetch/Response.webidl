@@ -1,7 +1,9 @@
 // https://fetch.spec.whatwg.org/#response
 [Exposed=(Window,Worker)]
 interface Response {
-  constructor(optional BodyInit? body = null, optional ResponseInit init = {});
+  // BodyInit, converted by the implementation: the generated union converter
+  // knows neither ReadableStream nor URLSearchParams and stringified both.
+  constructor(optional any body = null, optional ResponseInit init = {});
 
   [WebIDL2JSCallWithGlobal, NewObject] static Response error();
   [WebIDL2JSCallWithGlobal, NewObject] static Response redirect(USVString url, optional unsigned short status = 302);

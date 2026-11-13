@@ -22,6 +22,13 @@ function page(body) {
   return { window, document: window.document, navigations };
 }
 
+// A submission's navigation is planned as a task of its own.
+function nextTask() {
+  return new Promise(resolve => {
+    setTimeout(resolve, 5);
+  });
+}
+
 describe("Helpers: form submission", () => {
   specify("a submission whose submit event was canceled does not stop the next one", () => {
     const { document } = page(`<form><button type="submit"></button></form>`);
@@ -57,7 +64,7 @@ describe("Helpers: form submission", () => {
     assert.equal(submits, 1);
   });
 
-  specify("submit() fires no submit event and does not validate, and navigates", () => {
+  specify("submit() fires no submit event and does not validate, and navigates", async () => {
     const { document, navigations } = page(`<form action="/next"><input name="q" value="x" required></form>`);
     const form = document.querySelector("form");
     let events = 0;
@@ -69,10 +76,11 @@ describe("Helpers: form submission", () => {
     form.submit();
 
     assert.equal(events, 0);
+    await nextTask();
     assert.deepEqual(navigations, ["http://example.test/next?q="]);
   });
 
-  specify("a disconnected form submits nothing and throws nothing", () => {
+  specify("a disconnected form submits nothing and throws nothing", async () => {
     const { document, navigations } = page(``);
     const form = document.createElement("form");
     let submits = 0;
@@ -86,30 +94,33 @@ describe("Helpers: form submission", () => {
     form.requestSubmit();
 
     assert.equal(submits, 0);
+    await nextTask();
     assert.deepEqual(navigations, []);
   });
 
-  specify("a form taken out of the document by its submit event does not navigate", () => {
+  specify("a form taken out of the document by its submit event does not navigate", async () => {
     const { document, navigations } = page(`<form action="/next"><input type="submit"></form>`);
     const form = document.querySelector("form");
 
     form.addEventListener("submit", () => form.remove());
     document.querySelector("input").click();
 
+    await nextTask();
     assert.deepEqual(navigations, []);
   });
 
-  specify("a submitter with formnovalidate skips validation", () => {
+  specify("a submitter with formnovalidate skips validation", async () => {
     const { document, navigations } = page(
       `<form action="/next"><input name="q" required><button formnovalidate></button></form>`
     );
 
     document.querySelector("button").click();
 
+    await nextTask();
     assert.deepEqual(navigations, ["http://example.test/next?q="]);
   });
 
-  specify("a target naming a frame in the document does not navigate this document", () => {
+  specify("a target naming a frame in the document does not navigate this document", async () => {
     const { document, navigations } = page(
       `<iframe name="sink"></iframe><form action="/next" target="sink"><input type="submit"></form>` +
       `<form id="two" action="/next"><button formtarget="sink"></button></form>`
@@ -118,15 +129,17 @@ describe("Helpers: form submission", () => {
     document.querySelector("input").click();
     document.querySelector("#two button").click();
 
+    await nextTask();
     assert.deepEqual(navigations, []);
   });
 
   for (const target of ["", "_self", "_top", "_parent", "_SELF"]) {
-    specify(`a target of "${target}" navigates this document`, () => {
+    specify(`a target of "${target}" navigates this document`, async () => {
       const { document, navigations } = page(`<form action="/next" target="${target}"><input type="submit"></form>`);
 
       document.querySelector("input").click();
 
+      await nextTask();
       assert.deepEqual(navigations, ["http://example.test/next"]);
     });
   }

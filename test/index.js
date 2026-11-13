@@ -41,6 +41,7 @@ require("./helper-unit-tests/custom-element-names.js");
 require("./helper-unit-tests/parser-pause.js");
 require("./helper-unit-tests/node-length.js");
 require("./helper-unit-tests/module-fetch-failure.js");
+require("./helper-unit-tests/module-script-element.js");
 require("./helper-unit-tests/sheet-media.js");
 require("./helper-unit-tests/sheet-order.js");
 require("./helper-unit-tests/noscript-display.js");
@@ -57,6 +58,10 @@ require("./helper-unit-tests/response-clone.js");
 require("./helper-unit-tests/fetch-modes.js");
 require("./helper-unit-tests/presentational-hints.js");
 require("./helper-unit-tests/named-items.js");
+require("./helper-unit-tests/dialog-popover.js");
+require("./helper-unit-tests/move-before.js");
+require("./helper-unit-tests/rendering-invalidation.js");
+require("./helper-unit-tests/url-query-encoding.js");
 
 require("./to-port-to-wpts/class-list.js");
 require("./to-port-to-wpts/current-script.js");
