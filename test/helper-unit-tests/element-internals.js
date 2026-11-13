@@ -157,6 +157,7 @@ describe("Helpers: ElementInternals", () => {
     const { states } = window.document.createElement("x-states").internals;
 
     assert.ok(states instanceof window.CustomStateSet);
+    assert.equal(Object.keys(window).some(name => /CustomStateSet/i.test(name)), false);
     assert.throws(() => new window.CustomStateSet(), TypeError);
     states.add("checked");
     states.add("checked");
