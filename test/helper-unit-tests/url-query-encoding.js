@@ -55,6 +55,14 @@ describe("Helpers: a URL's query takes its document's encoding", () => {
     assert.equal(searchOf(document, "亜"), "%1B$B0!%1B(B");
   });
 
+  specify("ISO-2022-JP named by a meta charset alone", () => {
+    const { window } = new JSDOM(Buffer.from("<!DOCTYPE html><meta charset=iso-2022-jp><body></body>"), {
+      url: "https://example.test/page.html"
+    });
+    assert.equal(window.document.characterSet, "ISO-2022-JP");
+    assert.equal(searchOf(window.document, "\u0393"), "%1B$B&%23%1B(B");
+  });
+
   specify("EUC-KR", () => {
     const document = documentIn("EUC-KR");
     assert.equal(searchOf(document, "가"), "%B0%A1");
