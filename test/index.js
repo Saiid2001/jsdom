@@ -37,6 +37,7 @@ require("./helper-unit-tests/module-fetch-failure.js");
 require("./helper-unit-tests/sheet-media.js");
 require("./helper-unit-tests/noscript-display.js");
 require("./helper-unit-tests/hidden-elements.js");
+require("./helper-unit-tests/live-child-lists.js");
 require("./helper-unit-tests/inner-text.js");
 require("./helper-unit-tests/hyperlink-activation.js");
 require("./helper-unit-tests/closed-window.js");
