@@ -108,7 +108,8 @@ describe("Helpers: a URL's query takes its document's encoding", () => {
 // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#selecting-a-form-submission-encoding
 // https://url.spec.whatwg.org/#concept-urlencoded-serializer
 describe("Helpers: a form is submitted in its encoding", () => {
-  function submitted(charset, value, acceptCharset = null) {
+  // The navigation is planned as a task of its own.
+  async function submitted(charset, value, acceptCharset = null) {
     const { window } = new JSDOM(Buffer.from(`<!DOCTYPE html><form action="/next"><input name="q"></form>`), {
       url: "https://example.test/page.html",
       contentType: `text/html; charset=${charset}`
@@ -121,23 +122,26 @@ describe("Helpers: a form is submitted in its encoding", () => {
     const navigations = [];
     window.document.addEventListener("navigate", event => navigations.push(event.detail.url));
     form.submit();
+    await new Promise(resolve => {
+      setTimeout(resolve, 5);
+    });
     return navigations;
   }
 
-  specify("UTF-8 encodes each character's bytes, and a space as +", () => {
-    assert.deepEqual(submitted("UTF-8", "\u00E9 \u528D*-._~"), ["https://example.test/next?q=%C3%A9+%E5%8A%8D*-._%7E"]);
+  specify("UTF-8 encodes each character's bytes, and a space as +", async () => {
+    assert.deepEqual(await submitted("UTF-8", "\u00E9 \u528D*-._~"), ["https://example.test/next?q=%C3%A9+%E5%8A%8D*-._%7E"]);
   });
 
-  specify("the document's encoding", () => {
-    assert.deepEqual(submitted("Shift_JIS", "\u528D\uCF28"), ["https://example.test/next?q=%99%98%26%2353032%3B"]);
+  specify("the document's encoding", async () => {
+    assert.deepEqual(await submitted("Shift_JIS", "\u528D\uCF28"), ["https://example.test/next?q=%99%98%26%2353032%3B"]);
   });
 
-  specify("the first label of accept-charset that names an encoding", () => {
-    assert.deepEqual(submitted("UTF-8", "\uAC00", "bogus euc-kr shift_jis"), ["https://example.test/next?q=%B0%A1"]);
+  specify("the first label of accept-charset that names an encoding", async () => {
+    assert.deepEqual(await submitted("UTF-8", "\uAC00", "bogus euc-kr shift_jis"), ["https://example.test/next?q=%B0%A1"]);
   });
 
-  specify("UTF-16 submits as UTF-8", () => {
-    assert.deepEqual(submitted("windows-1252", "\u00E9", "utf-16le"), ["https://example.test/next?q=%C3%A9"]);
+  specify("UTF-16 submits as UTF-8", async () => {
+    assert.deepEqual(await submitted("windows-1252", "\u00E9", "utf-16le"), ["https://example.test/next?q=%C3%A9"]);
   });
 });
 
