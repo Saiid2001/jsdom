@@ -69,4 +69,15 @@ describe("Helpers: reading a Blob", () => {
     assert.equal(new window.Blob([view]).size, 0);
     assert.equal(new window.Blob([buffer, "x"]).size, 1);
   });
+
+  specify("native line endings are the platform's the navigator reports", async () => {
+    const { window } = new JSDOM();
+
+    assert.equal(await new window.Blob(["a\r\nb\rc"], { endings: "native" }).text(), "a\nb\nc");
+
+    Object.defineProperty(window.navigator, "platform", { value: "Win32", configurable: true });
+    assert.equal(await new window.Blob(["a\nb\r\nc\r"], { endings: "native" }).text(), "a\r\nb\r\nc\r\n");
+    assert.equal(await new window.File(["a\n"], "f", { endings: "native" }).text(), "a\r\n");
+    assert.equal(await new window.Blob(["a\n"]).text(), "a\n");
+  });
 });
