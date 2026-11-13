@@ -240,4 +240,21 @@ describe("Helpers: style invalidation", () => {
     document.getElementById("prev").before(document.createElement("b"));
     assert.notEqual(color("t"), RED);
   });
+
+  specify("moveBefore restyles the moved element and the parents it left and joined", () => {
+    const { document, color } = page(`<style>.a > i { color: red } .a:empty { color: red }</style>
+      <div id="from"><i id="m"></i></div><div id="to" class="a"></div>`);
+
+    assert.notEqual(color("m"), RED);
+    assert.equal(color("to"), RED);
+    assert.notEqual(color("from"), RED);
+
+    document.getElementById("to").moveBefore(document.getElementById("m"), null);
+
+    assert.equal(color("m"), RED);
+    assert.notEqual(color("to"), RED);
+
+    document.getElementById("from").classList.add("a");
+    assert.equal(color("from"), RED);
+  });
 });
