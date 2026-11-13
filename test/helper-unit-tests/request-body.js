@@ -64,4 +64,25 @@ describe("Helpers: a Request's body", () => {
     });
     assert.equal(request.headers.get("content-type"), "application/json");
   });
+
+  specify("fetch sends the extracted body", async () => {
+    const { createServer } = require("../util.js");
+    const server = await createServer((req, res) => {
+      const chunks = [];
+      req.on("data", chunk => chunks.push(chunk));
+      req.on("end", () => {
+        res.writeHead(200, { "Content-Type": "text/plain", "Access-Control-Allow-Origin": "*" });
+        res.end(`${req.headers["content-type"]}|${Buffer.concat(chunks).toString()}`);
+      });
+    });
+
+    try {
+      const base = `http://127.0.0.1:${server.address().port}/`;
+      const { window } = new JSDOM("", { url: base });
+      const response = await window.fetch(base, { method: "POST", body: new window.Blob(["sent"], { type: "a/b" }) });
+      assert.equal(await response.text(), "a/b|sent");
+    } finally {
+      server.destroy();
+    }
+  });
 });
