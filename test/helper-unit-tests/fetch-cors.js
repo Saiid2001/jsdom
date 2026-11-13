@@ -180,3 +180,14 @@ describe("Helpers: fetch's CORS protocol", () => {
     }
   });
 });
+
+describe("Helpers: fetch of a data: URL", () => {
+  specify("is answered from the URL, as a basic response", async () => {
+    const { window } = new JSDOM("", { url: "https://site.test/", virtualConsole: new VirtualConsole() });
+    const response = await window.fetch("data:text/plain,hello");
+
+    assert.equal(response.type, "basic");
+    assert.equal(await response.text(), "hello");
+    window.close();
+  });
+});
