@@ -38,4 +38,18 @@ describe("Helpers: Secure cookies", () => {
 
     assert.equal(window.document.cookie, "a=1");
   });
+
+  specify("a prefixed cookie must meet its prefix's conditions, whatever its case", () => {
+    const cookieJar = new CookieJar();
+    const url = "https://site.test/";
+
+    cookieJar.setCookieSync("__SeCuRe-a=1; Path=/", url, { ignoreError: true });
+    cookieJar.setCookieSync("__HoSt-b=1; Path=/", url, { ignoreError: true });
+    cookieJar.setCookieSync("__HoSt-c=1; Secure; Path=/; Domain=site.test", url, { ignoreError: true });
+    cookieJar.setCookieSync("__HoSt-d=1; Secure; Path=/a", url, { ignoreError: true });
+    cookieJar.setCookieSync("__SeCuRe-e=1; Secure; Path=/", url, { ignoreError: true });
+    cookieJar.setCookieSync("__HoSt-f=1; Secure; Path=/", url, { ignoreError: true });
+
+    assert.equal(cookieJar.getCookieStringSync(url), "__SeCuRe-e=1; __HoSt-f=1");
+  });
 });

@@ -17,7 +17,7 @@ async function proxy() {
     const host = req.headers["bsbx-proxy-host"];
     const url = new URL(req.url.replace(/^\/proxy/, ""), host);
 
-    seen.push({ url: url.href, headers: req.headers });
+    seen.push({ url: url.href, method: req.method, headers: req.headers });
 
     const headers = {
       "Content-Type": "text/plain",
@@ -26,7 +26,7 @@ async function proxy() {
 
     if (url.searchParams.has("to")) {
       headers.Location = url.searchParams.get("to");
-      res.writeHead(302, headers);
+      res.writeHead(Number(url.searchParams.get("code") || 302), headers);
       res.end();
       return;
     }
@@ -51,14 +51,17 @@ async function proxy() {
   return { window, seen, done: () => { window.close(); server.destroy(); } };
 }
 
-function xhr(window, url) {
+function xhr(window, url, method = "GET", body = null, headers = {}) {
   return new Promise(resolve => {
     const request = new window.XMLHttpRequest();
 
-    request.open("GET", url);
-    request.onload = () => resolve({ ok: true, text: request.responseText, url: request.responseURL });
+    request.open(method, url);
+    for (const [name, value] of Object.entries(headers)) {
+      request.setRequestHeader(name, value);
+    }
+    request.onload = () => resolve({ ok: true, status: request.status, text: request.responseText, url: request.responseURL });
     request.onerror = () => resolve({ ok: false });
-    request.send();
+    request.send(body);
   });
 }
 
@@ -117,6 +120,71 @@ describe("Helpers: redirects through a proxy", () => {
       assert.equal(await followed.text(), "at https://site.test/c");
       assert.equal(followed.url, "https://site.test/c");
       assert.equal(followed.redirected, true);
+    } finally {
+      done();
+    }
+  });
+
+  specify("only 301, 302, 303, 307 and 308 are redirects", async () => {
+    const { window, seen, done } = await proxy();
+    try {
+      const result = await xhr(window, "https://site.test/a?code=300&to=/c");
+
+      assert.equal(result.status, 300);
+      assert.equal(seen.length, 1);
+    } finally {
+      done();
+    }
+  });
+
+  specify("a POST redirected as a GET loses the headers that described its body", async () => {
+    const { window, seen, done } = await proxy();
+    try {
+      await xhr(window, "https://site.test/a?code=302&to=/c", "POST", "x".repeat(100));
+
+      assert.equal(seen[1].method, "GET");
+      assert.equal(seen[1].headers["content-length"], undefined);
+      assert.equal(seen[1].headers["content-type"], undefined);
+    } finally {
+      done();
+    }
+  });
+
+  specify("a redirect to a data: URL is a network error", async () => {
+    const { window, done } = await proxy();
+    try {
+      const result = await xhr(window, "https://site.test/a?to=data:text/plain,hi");
+
+      assert.equal(result.ok, false);
+    } finally {
+      done();
+    }
+  });
+
+  specify("a preflight names the request's headers lowercased, sorted, joined by commas", async () => {
+    const { window, seen, done } = await proxy();
+    try {
+      await xhr(window, "https://other.test/a", "GET", null, { "X-B": "1", "X-A": "2" });
+
+      assert.equal(seen[0].method, "OPTIONS");
+      assert.equal(seen[0].headers["access-control-request-headers"], "x-a,x-b");
+    } finally {
+      done();
+    }
+  });
+
+  specify("a preflighted upload states its length from the start", async () => {
+    const { window, done } = await proxy();
+    try {
+      const loadstart = await new Promise(resolve => {
+        const request = new window.XMLHttpRequest();
+
+        request.upload.onloadstart = e => resolve([e.loaded, e.total, e.lengthComputable]);
+        request.open("POST", "https://other.test/a");
+        request.send("twelve bytes");
+      });
+
+      assert.deepEqual(loadstart, [0, 12, true]);
     } finally {
       done();
     }
