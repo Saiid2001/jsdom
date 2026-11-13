@@ -44,6 +44,7 @@ require("./helper-unit-tests/frame-window-preparer.js");
 require("./helper-unit-tests/svg-intrinsic-size.js");
 require("./helper-unit-tests/request-from-request.js");
 require("./helper-unit-tests/fetch-modes.js");
+require("./helper-unit-tests/presentational-hints.js");
 
 require("./to-port-to-wpts/class-list.js");
 require("./to-port-to-wpts/current-script.js");
