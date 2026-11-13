@@ -19,6 +19,7 @@ require("./api/virtual-console.js");
 require("./helper-unit-tests/named-properties-tracker.js");
 require("./helper-unit-tests/style-rules-type-selectors.js");
 require("./helper-unit-tests/style-rules-escapes.js");
+require("./helper-unit-tests/style-rules-ancestors.js");
 require("./helper-unit-tests/subresource-status.js");
 require("./helper-unit-tests/shared-realm-prototype.js");
 require("./helper-unit-tests/window-global-this.js");
