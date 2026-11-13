@@ -184,4 +184,24 @@ describe("Helpers: ElementInternals", () => {
     assert.equal(elements.namedItem("n"), document.querySelector("x-later"));
     assert.equal(fieldset.elements.length, 1);
   });
+
+  specify("an element that names its form by id follows the id as it moves", () => {
+    const { window } = new JSDOM(`<form id="a"></form><form id="b"></form><x-ref form="target"></x-ref>`);
+    const { document } = window;
+    const owners = [];
+    class Ref extends window.HTMLElement {
+      formAssociatedCallback(form) {
+        owners.push(form && form.id);
+      }
+    }
+    Ref.formAssociated = true;
+    window.customElements.define("x-ref", Ref);
+    const [a, b] = document.querySelectorAll("form");
+
+    b.id = "target";
+    a.id = "target";
+    a.removeAttribute("id");
+    b.removeAttribute("id");
+    assert.deepEqual(owners, ["target", "target", "target", null]);
+  });
 });
