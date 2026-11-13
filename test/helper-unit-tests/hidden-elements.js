@@ -15,6 +15,16 @@ const HIDDEN = [
 ];
 
 describe("Helpers: hidden elements", () => {
+  // The user agent's rule is important, so a page's `.form input { display:
+  // block }` does not draw its hidden inputs: kbdn.com's three became a 540px
+  // empty box at the top of its form.
+  specify("a hidden input stays hidden whatever the page says", () => {
+    const { window } = new JSDOM(`<style>form input { display: block }</style><form><input type="hidden"></form>`);
+    const input = window.document.querySelector("input");
+
+    assert.equal(window.getComputedStyle(input).display, "none");
+  });
+
   for (const name of HIDDEN) {
     specify(`a <${name}> is display: none`, () => {
       const { window } = new JSDOM(`<body>`);
