@@ -169,4 +169,19 @@ describe("Helpers: ElementInternals", () => {
     states.clear();
     assert.equal(states.size, 0);
   });
+
+  specify("a live collection includes an element once an upgrade makes it form-associated", () => {
+    const { window } = new JSDOM(`<form><fieldset><x-later name="n"></x-later></fieldset></form>`);
+    const { document } = window;
+    const form = document.forms[0];
+    const fieldset = document.querySelector("fieldset");
+    const { elements } = form;
+
+    assert.equal(elements.length, 1);
+    assert.equal(fieldset.elements.length, 0);
+    defineWithInternals(window, "x-later", { formAssociated: true });
+    assert.equal(elements.length, 2);
+    assert.equal(elements.namedItem("n"), document.querySelector("x-later"));
+    assert.equal(fieldset.elements.length, 1);
+  });
 });
