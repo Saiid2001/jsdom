@@ -29,3 +29,37 @@ describe("Helpers: bodyUsed", () => {
     assert.equal(await response.text(), "");
   });
 });
+
+describe("Helpers: the body a Response is constructed with", () => {
+  specify("URLSearchParams is sent form-encoded", async () => {
+    const { window } = new JSDOM("", { url: "https://site.test/" });
+    const response = new window.Response(new window.URLSearchParams("a=1&b=2"));
+
+    assert.equal(response.headers.get("content-type"), "application/x-www-form-urlencoded;charset=UTF-8");
+    assert.equal(await response.text(), "a=1&b=2");
+  });
+
+  specify("a ReadableStream is read, and a chunk that is not a Uint8Array is a TypeError", async () => {
+    const { window } = new JSDOM("", { url: "https://site.test/" });
+    const { ReadableStream } = require("node:stream/web");
+    const good = new ReadableStream({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode("he"));
+        controller.enqueue(new TextEncoder().encode("llo"));
+        controller.close();
+      }
+    });
+    const bad = new ReadableStream({
+      start(controller) {
+        controller.enqueue("not bytes");
+        controller.close();
+      }
+    });
+
+    const response = new window.Response(good);
+
+    assert.equal(response.headers.get("content-type"), null);
+    assert.equal(await response.text(), "hello");
+    await assert.rejects(new window.Response(bad).text(), TypeError);
+  });
+});
