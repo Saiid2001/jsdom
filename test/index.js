@@ -57,6 +57,7 @@ require("./helper-unit-tests/response-clone.js");
 require("./helper-unit-tests/fetch-modes.js");
 require("./helper-unit-tests/presentational-hints.js");
 require("./helper-unit-tests/named-items.js");
+require("./helper-unit-tests/style-invalidation.js");
 
 require("./to-port-to-wpts/class-list.js");
 require("./to-port-to-wpts/current-script.js");
