@@ -205,4 +205,24 @@ describe("Helpers: ElementInternals", () => {
     b.removeAttribute("id");
     assert.deepEqual(owners, ["target", "target", "target", null]);
   });
+
+  specify("the ordinary form controls keep their own constraint validation", () => {
+    const { window } = new JSDOM(`<form><fieldset><input required></fieldset></form>`);
+    const { document } = window;
+    defineWithInternals(window, "x-unrelated", { formAssociated: true });
+    const input = document.querySelector("input");
+
+    assert.equal(input.willValidate, true);
+    assert.equal(input.checkValidity(), false);
+    assert.equal(document.forms[0].checkValidity(), false);
+    assert.equal(document.querySelector("fieldset").matches(":invalid"), true);
+  });
+
+  specify("a label's form is its form-associated control's form owner", () => {
+    const { window } = new JSDOM(`<label for="c"></label><form><x-labelled id="c"></x-labelled></form>`);
+    const { document } = window;
+    defineWithInternals(window, "x-labelled", { formAssociated: true });
+
+    assert.equal(document.querySelector("label").form, document.forms[0]);
+  });
 });
