@@ -48,6 +48,7 @@ require("./helper-unit-tests/fetch-modes.js");
 require("./helper-unit-tests/dialog-popover.js");
 require("./helper-unit-tests/move-before.js");
 require("./helper-unit-tests/rendering-invalidation.js");
+require("./helper-unit-tests/url-query-encoding.js");
 
 require("./to-port-to-wpts/class-list.js");
 require("./to-port-to-wpts/current-script.js");
