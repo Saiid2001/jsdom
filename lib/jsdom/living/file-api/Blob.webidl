@@ -11,6 +11,13 @@ interface Blob {
   Blob slice([Clamp] optional long long start,
             [Clamp] optional long long end,
             optional DOMString contentType);
+
+  // read from the Blob.
+  // ReadableStream is the host's (helpers/streams.js), which webidl2js cannot name.
+  [NewObject] any stream();
+  [NewObject] Promise<USVString> text();
+  [NewObject] Promise<ArrayBuffer> arrayBuffer();
+  [NewObject] Promise<Uint8Array> bytes();
 };
 
 enum EndingType { "transparent", "native" };
