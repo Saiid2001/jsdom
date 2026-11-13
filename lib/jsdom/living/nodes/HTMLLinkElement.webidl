@@ -5,7 +5,7 @@ interface HTMLLinkElement : HTMLElement {
   [CEReactions, ReflectURL] attribute USVString href;
   [CEReactions, Reflect, ReflectEnum=("anonymous", "use-credentials"), ReflectEnumAlias=("", "anonymous"), ReflectInvalid="anonymous"] attribute DOMString? crossOrigin;
   [CEReactions, Reflect] attribute DOMString rel;
-  [CEReactions, Reflect, ReflectEnum=("fetch", "audio", "document", "embed", "font", "image", "manifest", "object", "report", "script", "sharedworker", "style", "track", "video", "worker", "xslt")] attribute DOMString as;
+  [CEReactions, Reflect, ReflectEnum=("fetch", "audio", "audioworklet", "document", "embed", "font", "frame", "iframe", "image", "json", "manifest", "object", "paintworklet", "report", "script", "serviceworker", "sharedworker", "style", "text", "track", "video", "webidentity", "worker", "xslt")] attribute DOMString as;
   [SameObject, PutForwards=value] readonly attribute DOMTokenList relList;
   [SameObject, PutForwards=value] readonly attribute DOMTokenList blocking;
   [CEReactions, Reflect] attribute DOMString media;
