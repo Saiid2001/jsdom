@@ -206,6 +206,22 @@ describe("Helpers: link rel=preload", () => {
     assert.equal(loader.asked[0].options.additionalHeaders.Origin, "http://example.test");
   });
 
+  specify("is requested under its referrerpolicy, else the document's", async () => {
+    const own = open();
+    const link = preloadLink(own.document, { as: "style", href: "/own.css", referrerpolicy: "no-referrer" });
+    const ownEvent = eventOf(link);
+    own.document.head.append(link);
+    await ownEvent;
+    assert.equal(own.loader.asked[0].options.referrerPolicy, "no-referrer");
+
+    const inherited = open(`<meta name="referrer" content="origin">`);
+    const plain = preloadLink(inherited.document, { as: "style", href: "/doc.css" });
+    const inheritedEvent = eventOf(plain);
+    inherited.document.head.append(plain);
+    await inheritedEvent;
+    assert.equal(inherited.loader.asked[0].options.referrerPolicy, "origin");
+  });
+
   specify("is fetched only once connected to a document with a browsing context", async () => {
     const { window, document, loader } = open();
     const detached = preloadLink(document, { as: "image", href: "/detached.png" });
@@ -499,5 +515,22 @@ describe("Helpers: a module script's request", () => {
     await fetchModuleText(window, "http://example.test/m.js");
     assert.equal(loader.asked[0].options.additionalHeaders.Origin, "http://example.test");
     assert.equal(loader.asked[1].options.additionalHeaders, undefined);
+  });
+});
+
+describe("Helpers: link rel=modulepreload's request", () => {
+  before(() => setModulePreloader(({ url, fetchText }) => fetchText(url, { type: "javascript" })));
+  after(() => setModulePreloader(null));
+
+  specify("is made under the link's referrerpolicy", async () => {
+    const { document, loader } = open();
+    const link = document.createElement("link");
+    link.rel = "modulepreload";
+    link.setAttribute("href", "/m.js");
+    link.setAttribute("referrerpolicy", "no-referrer");
+    const event = eventOf(link);
+    document.head.append(link);
+    assert.equal(await event, "load");
+    assert.equal(loader.asked[0].options.referrerPolicy, "no-referrer");
   });
 });
