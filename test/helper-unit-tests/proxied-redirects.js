@@ -72,7 +72,8 @@ describe("Helpers: redirects through a proxy", () => {
       assert.equal(result.text, "at https://other.test/b");
       assert.equal(result.url, "https://other.test/b");
       assert.equal(seen[1].headers["bsbx-proxy-host"], "https://other.test");
-      assert.equal(seen[1].headers.referer, "https://site.test/a?to=https://other.test/b");
+      // The document's, reduced for another origin: never the redirect's address.
+      assert.equal(seen[1].headers.referer, "https://site.test/");
     } finally {
       done();
     }
