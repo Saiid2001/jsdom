@@ -130,7 +130,8 @@ describe("Helpers: image loading", () => {
     await tick();
     await tick();
 
-    assert.deepEqual(events, []);
+    // Only the error src = "" fires itself: the replaced request fires nothing.
+    assert.deepEqual(events, ["error"]);
     assert.equal(img.naturalWidth, 0);
   });
 
@@ -195,5 +196,45 @@ describe("Helpers: image loading", () => {
 
     assert.equal(document.querySelector("img").loading, "eager");
     assert.equal(resources.requests.length, 1);
+  });
+
+  // https://html.spec.whatwg.org/multipage/images.html#updating-the-image-data: with no source to select, an element
+  // that has a src attribute fires error; with a source that does not parse as a URL, it fires error too. Either is
+  // queued as a task, after the script that set src, and leaves the element complete.
+  specify("an empty src fires error in a later task, and no src fires nothing", async () => {
+    const { document } = page(`<img id="empty" src=""><img id="none">`);
+    const events = [];
+
+    for (const img of document.querySelectorAll("img")) {
+      img.addEventListener("load", () => events.push(`load ${img.id}`));
+      img.addEventListener("error", () => events.push(`error ${img.id}`));
+    }
+
+    const set = document.createElement("img");
+    set.src = "";
+    set.addEventListener("error", () => events.push("error set"));
+    assert.deepEqual(events, []);
+
+    await new Promise(resolve => {
+      setTimeout(resolve, 10);
+    });
+
+    assert.deepEqual(events.sort(), ["error empty", "error set"]);
+    assert.equal(set.complete, true);
+  });
+
+  specify("a src that is not a valid URL fires error and is complete, with nothing fetched", async () => {
+    const { document, resources } = page(``);
+    const img = document.createElement("img");
+    img.src = "http://[";
+    assert.equal(img.complete, false);
+
+    const event = await new Promise(resolve => {
+      img.onload = img.onerror = resolve;
+    });
+
+    assert.equal(event.type, "error");
+    assert.equal(img.complete, true);
+    assert.equal(resources.requests.length, 0);
   });
 });
