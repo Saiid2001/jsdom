@@ -373,6 +373,7 @@ addDir("../../lib/jsdom/living/attributes");
 addDir("../../lib/jsdom/living/constraint-validation");
 addDir("../../lib/jsdom/living/crypto");
 addDir("../../lib/jsdom/living/cssom");
+addDir("../../lib/jsdom/living/dnd");
 addDir("../../lib/jsdom/living/custom-elements");
 addDir("../../lib/jsdom/living/domparsing");
 addDir("../../lib/jsdom/living/eventsource");

@@ -37,6 +37,7 @@ require("./helper-unit-tests/hit-testing.js");
 require("./helper-unit-tests/client-box.js");
 require("./helper-unit-tests/reflected-attributes.js");
 require("./helper-unit-tests/event-interfaces.js");
+require("./helper-unit-tests/pointer-drag-events.js");
 require("./helper-unit-tests/custom-element-names.js");
 require("./helper-unit-tests/parser-pause.js");
 require("./helper-unit-tests/node-length.js");

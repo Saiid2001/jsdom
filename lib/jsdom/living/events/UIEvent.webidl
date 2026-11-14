@@ -6,6 +6,13 @@ interface UIEvent : Event {
   readonly attribute long detail;
 };
 
+// The target's pseudo-element when an event is dispatched at one, as Chromium ships it. Its type there is
+// CSSPseudoElement?, an EventTarget jsdom does not implement; no event is dispatched at a pseudo-element, so it is
+// always null.
+partial interface UIEvent {
+  readonly attribute EventTarget? pseudoTarget;
+};
+
 // https://w3c.github.io/uievents/#idl-uieventinit
 dictionary UIEventInit : EventInit {
   Window? view = null;
